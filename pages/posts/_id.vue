@@ -22,7 +22,9 @@
                     post.title
                   }}</nuxt-link>
                 </h1>
-                <div v-html="post.content" />
+                <div v-for="contentBlock in post.content" :key="contentBlock.id">
+                  <div v-if="contentBlock._modelApiKey === 'text_block'" v-html="contentBlock.text" />
+                </div>
               </div>
             </div>
           </div>
@@ -57,7 +59,26 @@ export default {
             title
             slug
             publicationDate: _firstPublishedAt
-            content
+            content {
+              ... on TextBlockRecord {
+                id
+                text(markdown: false)
+                _modelApiKey
+              }
+              ... on VideoRecord {
+                id
+                _modelApiKey
+                externalVideo {
+                  height
+                  provider
+                  providerUid
+                  thumbnailUrl
+                  title
+                  url
+                  width
+                }
+              }
+            }
             coverImage {
               responsiveImage(imgixParams: { fit: crop, ar: "16:9", w: 860 }) {
                 ...imageFields

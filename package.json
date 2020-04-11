@@ -1,8 +1,8 @@
 {
-  "name": "datocms-nuxtjs-demo",
+  "name": "the-go-live-guide",
   "version": "1.0.0",
-  "description": "DatoCMS+Nuxt.js blog demo",
-  "author": "Stefano Verna",
+  "description": "The Go Live Guide Blog",
+  "author": "James Peilow",
   "private": true,
   "scripts": {
     "dev": "nuxt",
