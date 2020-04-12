@@ -7,6 +7,7 @@
             <figure class="image">
               <datocms-image :data="post.coverImage.responsiveImage" />
             </figure>
+            <!-- <div v-if="post.coverImage.customData['unsplash-attribution']" v-html="post.coverImage.customData['unsplash-attribution']" /> -->
           </div>
         </div>
 
@@ -23,7 +24,8 @@
                   }}</nuxt-link>
                 </h1>
                 <div v-for="contentBlock in post.content" :key="contentBlock.id">
-                  <div v-if="contentBlock._modelApiKey === 'text_block'" v-html="contentBlock.text" />
+                  <div v-if="contentBlock._modelApiKey === 'text_block'" v-html="$md.render(contentBlock.text)" />
+                  <datocms-image v-if="contentBlock._modelApiKey === 'image_text'" :data="contentBlock.image.responsiveImage" />
                 </div>
               </div>
             </div>
@@ -65,6 +67,16 @@ export default {
                 text(markdown: false)
                 _modelApiKey
               }
+              ... on ImageTextRecord {
+                id
+                _modelApiKey
+                image {
+                  responsiveImage(imgixParams: { w: 800 auto: format }) {
+                    ...imageFields
+                  }
+                }
+                text
+              }
               ... on VideoRecord {
                 id
                 _modelApiKey
@@ -80,6 +92,7 @@ export default {
               }
             }
             coverImage {
+              customData
               responsiveImage(imgixParams: { fit: crop, ar: "16:9", w: 860 }) {
                 ...imageFields
               }
